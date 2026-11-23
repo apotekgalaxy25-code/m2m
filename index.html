@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="id" data-pal="cool">
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="#059669">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sistem Manajemen Absensi dan Gaji Karyawan</title>
+<style>
+:root{--bg:#f1f5f9;--card:#fff;--tx:#0f172a;--mu:#64748b;--bd:#cbd5e1;--soft:#f1f5f9;--ac:#059669;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#162033;--tx:#e2e8f0;--mu:#94a3b8;--bd:#334155;--soft:#1e293b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1220;--card:#162033;--tx:#e2e8f0;--mu:#94a3b8;--bd:#334155;--soft:#1e293b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx);font-size:14px}
+.w{max-width:1200px;margin:0 auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.sp{justify-content:space-between}
+label{display:block;font-size:11px;font-weight:600;color:var(--mu);text-transform:uppercase;margin-bottom:3px}
+select,input,textarea{font:inherit;padding:7px 9px;border:1px solid var(--bd);border-radius:9px;background:var(--card);color:var(--tx);max-width:100%}
+button{font:inherit;font-weight:600;padding:8px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);cursor:pointer}
+button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+button.a{background:#fbbf24;border-color:#fbbf24;color:#111}
+.tabs{display:flex;gap:4px;background:var(--soft);padding:4px;border-radius:12px}
+.tabs button{border:0;background:transparent;color:var(--mu)}
+.tabs button.on{background:var(--card);color:var(--ac);box-shadow:0 1px 2px #0002}
+.hide{display:none!important}
+h1{font-size:17px;margin:0}h2{font-size:15px;margin:0 0 8px}
+.mu{color:var(--mu);font-size:12px}
+.sc{overflow-x:auto;padding-bottom:4px}
+table{border-collapse:collapse;width:100%}
+.m th,.m td{border:1px solid #64748b;text-align:center;padding:9px 3px;min-width:34px;font-size:13px;user-select:none}
+.m td.c{cursor:pointer;font-weight:700;font-size:14px}
+.m td.c:hover{outline:2px solid var(--tx);outline-offset:-2px}
+.m .nm{text-align:left;font-weight:800;padding:9px 10px;min-width:130px;position:sticky;left:0;background:var(--card);z-index:1;white-space:nowrap}
+.m .wk{border-left:3px solid var(--tx)}
+.m .no{display:inline-block;width:20px;height:20px;line-height:20px;border-radius:50%;background:var(--soft);font-size:11px;text-align:center;margin-right:6px}
+.m .mv{margin-left:6px}.m .mv a{cursor:pointer;color:var(--mu);font-size:10px;margin-left:3px}
+.m tr.cv td{background:var(--soft);font-size:12px;font-weight:700}
+.m tr.cv td.bad{color:#e11d48;background:#ffe4e6}
+.we{background:#ffe4e6;color:#be123c}.fr{background:#d1fae5;color:#065f46}
+.P{background:#FFFF00;color:#000}.S{background:#00B0F0;color:#000}.L{background:#FF0000;color:#fff}.SB{background:#92D050;color:#000}
+.lg span.b{display:inline-block;min-width:30px;text-align:center;border:1px solid #475569;padding:1px 4px;margin-right:8px;font-weight:700}
+.t th,.t td{padding:8px;text-align:left;border-bottom:1px solid var(--bd);font-size:13px}
+.t th{font-size:11px;text-transform:uppercase;color:var(--mu)}
+.pill{padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}
+.ok{background:#d1fae5;color:#065f46}.wr{background:#fef3c7;color:#92400e}
+.mo{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:14px;z-index:50}
+.mb{background:var(--card);border-radius:14px;padding:16px;width:100%;max-width:480px;max-height:90vh;overflow:auto}
+#toast{position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;flex-direction:column;gap:6px;align-items:center}
+#toast div{background:#065f46;color:#fff;padding:9px 14px;border-radius:10px;font-weight:600;font-size:13px}
+.slip{border:1px solid var(--bd);border-radius:12px;padding:18px;margin:0 auto 14px;background:var(--card);max-width:720px}.slip h3{margin:0 0 2px;text-align:center;font-size:16px}.slip .t td{padding:5px 8px}.sg{display:flex;justify-content:space-around;text-align:center;margin-top:10px}.sg div{width:40%;border-top:1px solid var(--tx);padding-top:4px;margin-top:46px;font-size:12px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal .h{text-align:center;font-size:11px;font-weight:700;color:var(--mu)}.cal .d{min-height:64px;border:1px solid var(--bd);border-radius:8px;padding:3px 4px;font-size:11px;cursor:pointer;overflow:hidden;text-align:center}.cal .d b{display:block;text-align:left;font-size:12px}
+/* palet warna */
+:root{--g1:#047857;--g2:#0d9488;--g3:#0e7490;--d1:#064e3b;--d2:#115e59;--d3:#164e63}
+:root[data-pal="cool"]:not([data-theme="dark"]){--bg:#eaf5fb;--soft:#e1f0f8;--bd:#c3dbe8;--ac:#0891b2;--g1:#0369a1;--g2:#0891b2;--g3:#0d9488}
+:root[data-pal="cool"][data-theme="dark"]{--bg:#06121d;--card:#0e2233;--bd:#1d3b53;--soft:#143049;--tx:#e0f2fe;--mu:#8fb3c9;--ac:#22d3ee;--g1:#0369a1;--g2:#0891b2;--g3:#0d9488;--d1:#0c4a6e;--d2:#0e7490;--d3:#115e59}
+@media(prefers-color-scheme:dark){:root[data-pal="cool"]:not([data-theme="light"]):not([data-theme="dark"]){--bg:#06121d;--card:#0e2233;--bd:#1d3b53;--soft:#143049;--tx:#e0f2fe;--mu:#8fb3c9;--ac:#22d3ee;--d1:#0c4a6e;--d2:#0e7490;--d3:#115e59}}
+/* tampilan */
+.hdr3{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:6px 12px;margin-bottom:10px}
+.hdr3 .pr{text-align:right;font-weight:700;font-size:clamp(11px,2.4vw,16px);text-transform:uppercase;white-space:nowrap}
+@media(max-width:600px){.hdr3{grid-template-columns:1fr}.hdr3 .pr{text-align:center}.hdr3 .sp0{display:none}}
+body{letter-spacing:.01em}
+.card{border-radius:16px;box-shadow:0 1px 3px rgba(15,23,42,.08),0 8px 24px rgba(15,23,42,.05)}
+.card h2{display:flex;align-items:center;gap:8px;font-size:16px}
+button{border-radius:11px;transition:filter .15s,transform .05s,box-shadow .15s}
+button:hover{filter:brightness(.95)}button:active{transform:translateY(1px)}
+button.p{background:linear-gradient(135deg,var(--ac),var(--g2));border-color:transparent;box-shadow:0 2px 8px rgba(8,145,178,.30)}
+button.a{background:linear-gradient(135deg,#fbbf24,#f59e0b);border-color:transparent;box-shadow:0 2px 6px rgba(245,158,11,.35)}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--ac);outline-offset:1px}
+.hd{background:linear-gradient(135deg,var(--g1),var(--g2) 55%,var(--g3));color:#fff;border:0}
+.hd h1{font-size:20px;letter-spacing:.02em}.hd .mu{color:#d1fae5}
+.hd button{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff;box-shadow:none}
+.hd button.p{background:#fff;color:var(--g1);border-color:#fff}
+.hd .tabs{background:rgba(255,255,255,.16);flex-wrap:wrap}
+.hd .tabs button{background:transparent;border:0;color:#ecfdf5}
+.hd .tabs button.on{background:#fff;color:var(--g1);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.t tbody tr:hover{background:var(--soft)}
+.t th{background:var(--soft)}
+.slip{box-shadow:0 2px 10px rgba(15,23,42,.08)}
+:root[data-theme="dark"] .hd{background:linear-gradient(135deg,var(--d1),var(--d2) 55%,var(--d3))}
+:root[data-theme="dark"] .we{background:#4c0519;color:#fda4af}
+:root[data-theme="dark"] .fr{background:#064e3b;color:#6ee7b7}
+:root[data-theme="dark"] .ok{background:#064e3b;color:#6ee7b7}
+:root[data-theme="dark"] .wr{background:#78350f;color:#fcd34d}
+:root[data-theme="dark"] .m tr.cv td.bad{background:#4c0519;color:#fda4af}
+:root[data-theme="dark"] .card{box-shadow:0 1px 3px rgba(0,0,0,.5)}
+@media(prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .hd{background:linear-gradient(135deg,var(--d1),var(--d2) 55%,var(--d3))}
+:root:not([data-theme="light"]) .we{background:#4c0519;color:#fda4af}
+:root:not([data-theme="light"]) .fr{background:#064e3b;color:#6ee7b7}
+:root:not([data-theme="light"]) .ok{background:#064e3b;color:#6ee7b7}
+:root:not([data-theme="light"]) .wr{background:#78350f;color:#fcd34d}
+:root:not([data-theme="light"]) .m tr.cv td.bad{background:#4c0519;color:#fda4af}
+}
+.mv-day{display:flex;gap:10px;align-items:stretch;border:1px solid var(--bd);border-radius:14px;padding:8px;margin-bottom:8px;background:var(--card)}
+.mv-d{width:56px;flex:none;border-radius:10px;text-align:center;padding:6px 2px;background:var(--soft)}
+.mv-d b{display:block;font-size:20px;line-height:1.1}.mv-d span{font-size:11px;font-weight:700}.mv-d.td{outline:2px solid var(--ac);outline-offset:1px}
+.mv-c{flex:1;display:flex;flex-wrap:wrap;gap:6px;align-content:center;align-items:center}
+.chip{display:flex;align-items:center;gap:6px;border-radius:9px;padding:5px 8px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid #475569}
+.chip i{font-style:normal;background:rgba(0,0,0,.18);border-radius:6px;padding:0 6px}
+.cvg{margin-left:auto;font-size:11px;font-weight:700;color:var(--mu)}.cvg.bad{color:#e11d48}
+.tabs.seg{display:inline-flex}.tabs.seg button.on{background:var(--card)}
+.hero{background:linear-gradient(135deg,var(--g1),var(--g2) 55%,var(--g3));color:#fff;border:0;text-align:center;padding:30px 16px}
+.hero h2{justify-content:center;font-size:26px;margin:6px 0}.hero p{margin:6px auto;max-width:640px;opacity:.95;line-height:1.5}
+.hero .hi{font-size:46px}.hero .tg{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:4px 12px;margin:4px;font-size:12px;font-weight:700}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:12px}
+.fi{border:1px solid var(--bd);border-radius:16px;padding:16px;background:var(--card);box-shadow:0 1px 3px rgba(15,23,42,.06)}
+.fi .ic{font-size:28px}.fi b{display:block;margin:6px 0 4px;font-size:15px}.fi p{margin:0;color:var(--mu);font-size:13px;line-height:1.5}
+.ul{list-style:none;padding:0;margin:0}.ul li{padding:7px 0 7px 28px;position:relative;line-height:1.5}.ul li:before{content:"\2714";position:absolute;left:0;color:var(--ac);font-weight:800}
+.stp{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.stp div{background:var(--soft);border-radius:12px;padding:12px;font-size:13px}.stp b{display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:var(--ac);color:#fff;margin-bottom:6px}
+svg.ic{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tabs button,.ib{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;font-weight:600;line-height:1.15;text-align:center}
+.tabs button{min-width:66px;padding:9px 10px;border-radius:16px}
+.ib{min-width:80px;padding:10px 12px;border-radius:18px;font-size:12px}
+.hb{width:44px;height:44px;min-width:44px;padding:0!important;border-radius:50%!important;display:inline-flex!important;align-items:center;justify-content:center}
+.hb svg{width:21px;height:21px}
+.tabs.seg button{min-width:74px;padding:8px 10px}
+@media(max-width:720px){
+body{padding-bottom:98px}
+.hd .tabs{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--card);border:0;border-top:1px solid var(--bd);border-radius:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));flex-wrap:nowrap;overflow-x:auto;gap:2px;box-shadow:0 -6px 20px rgba(15,23,42,.10)}
+.hd .tabs button{color:var(--mu);flex:0 0 auto;min-width:64px}
+.hd .tabs button.on{background:var(--soft);color:var(--ac);box-shadow:none}
+#toast{bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+}
+.plans{display:flex;gap:12px;flex-wrap:wrap}.plan{position:relative;flex:1;min-width:200px;border:1px solid var(--bd);border-radius:16px;padding:20px 14px 16px;text-align:center;background:var(--card)}
+.plan.best{border:2px solid var(--ac);box-shadow:0 4px 18px rgba(8,145,178,.25)}.plan .pn{font-weight:800;font-size:16px}.plan .pp{font-size:28px;font-weight:800;margin:6px 0 0}
+.plan .bdg{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--ac);color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+body.locked #vj,body.locked #va,body.locked #vg,body.locked #vn,body.locked #vw{display:none!important}
+body.locked .hd .row button:not(#tt):not(#tp){display:none!important}
+@media print{@page{size:landscape;margin:8mm}#dv.hide{display:block!important}#mv{display:none!important}#toast{display:none!important}html:root:not(#p){--tx:#000;--card:#fff;--bd:#999;--soft:#eee;--mu:#444;--bg:#fff}.card,.slip{box-shadow:none!important;background:#fff!important;color:#000}.we{background:#ffe4e6!important;color:#be123c!important}.fr{background:#d1fae5!important;color:#065f46!important}body{background:#fff;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}.np{display:none!important}.slip{break-after:page;border:1px solid #000;background:#fff!important;color:#000!important}body.po .slip:not(.sel){display:none}.card{border:0;padding:0}.sc{overflow:visible}.m .nm{position:static}}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div class="w">
+<div class="card hd np row sp">
+  <div><h1>💊 Sistem Manajemen Absensi dan Gaji Karyawan</h1><div id="sync" class="mu">Mode lokal</div><div id="licb" class="mu" style="font-weight:700"></div></div>
+  <div class="tabs"><button id="tj" class="on" data-ic="cal" onclick="tab('j')">Jadwal</button><button id="ta" data-ic="clip" onclick="tab('a')">Absensi</button><button id="tg" data-ic="wal" onclick="tab('g')">Gaji</button><button id="tn" data-ic="rcpt" onclick="tab('n')">Slip</button><button id="tw" data-ic="swap" onclick="tab('w')">Tukar</button><button id="tl" data-ic="star" onclick="tab('l')">Langganan</button><button id="tx" data-ic="info" onclick="tab('t')">Tentang</button></div>
+  <div class="row"><button id="tp" class="hb" data-ic="pal" aria-label="Ganti tema warna" title="Tema warna" onclick="togglePal()"></button><button id="tt" class="hb" data-ic="moon" aria-label="Mode terang atau gelap" title="Terang / Gelap" onclick="toggleTheme()"></button><button class="hb" data-ic="print" aria-label="Print atau PDF" title="Print / PDF" onclick="window.print()"></button><button class="hb p" data-ic="share" aria-label="Bagikan ke WhatsApp" title="Bagikan WhatsApp" onclick="openWA()"></button></div>
+</div>
+
+<section id="vj">
+  <div class="card np row sp">
+    <div class="row">
+      <div><label>Bulan</label><select id="sm" onchange="chg()"></select></div>
+      <div><label>Tahun</label><select id="sy" onchange="chg()"></select></div>
+      <button class="ib" data-ic="users" onclick="openEmp()"><span>Pegawai (<span id="ec">0</span>)</span></button>
+      <div><label>Tampilan</label><div class="tabs seg"><button id="vd" data-ic="mon" onclick="setView('desktop')">Desktop</button><button id="vm" data-ic="ph" onclick="setView('mobile')">HP</button></div></div>
+    </div>
+    <div class="row"><button class="ib" data-ic="img" onclick="imgMonth()">JPEG Bulanan</button><button class="ib" data-ic="img" onclick="imgDay()">JPEG Hari Ini</button><button class="ib a" data-ic="bolt" onclick="show('mc')">Jadwal Otomatis</button></div>
+  </div>
+  <p class="mu np" style="margin:0 2px 10px">💡 Klik sel untuk mengganti shift (P → S → SB → L). Klik judul untuk mengubah nama. Data tersimpan di browser perangkat ini.</p>
+  <div class="card">
+    <div class="hdr3">
+      <span class="sp0"></span>
+      <h2 id="ttl" contenteditable="true" onblur="saveTitle()" style="font-size:clamp(15px,3.4vw,24px);text-transform:uppercase;text-decoration:underline;margin:0;text-align:center;display:block"></h2>
+      <div id="per" class="pr"></div>
+    </div>
+    <div class="sc" id="dv"><table class="m"><thead id="th"></thead><tbody id="tb"></tbody></table></div>
+    <div id="mv" class="hide"></div>
+    <div class="row sp" style="margin-top:14px;align-items:flex-start">
+      <div class="lg" style="line-height:2">
+        <b>KETERANGAN</b><br>
+        <span class="b P">P</span>PAGI 07:00 - 14:00<br>
+        <span class="b S">S</span>SIANG 14:00 - 21:00<br>
+        <span class="b L">L</span>LIBUR (2x/bulan di Sabtu/Minggu)<br>
+        <span class="b SB">SB</span>SIANG BERSIH-BERSIH RAK (Jumat)
+      </div>
+      <div style="flex:1;min-width:280px">
+        <h2 class="mu" style="text-transform:uppercase">Ringkasan &amp; Validasi Libur</h2>
+        <div class="sc"><table class="t"><thead><tr><th>Nama</th><th>P</th><th>S</th><th>SB</th><th>L</th><th>Aturan</th></tr></thead><tbody id="sum"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="va" class="hide">
+  <div class="card np row sp">
+    <div class="row"><div><label>Tanggal</label><input type="date" id="ad" onchange="renderAtt()"></div><button onclick="attToday()">Hari Ini</button></div>
+    <div class="row"><button id="bf" class="ib" data-ic="cal" onclick="openFull()">Hadir Penuh Sebulan</button><button class="ib p" data-ic="check" onclick="fillAtt()">Isi Sesuai Jadwal</button></div>
+  </div>
+  <div class="card">
+    <h2>Pencatatan Kehadiran Harian</h2><p id="adl" class="mu" style="margin-top:0"></p>
+    <div class="sc"><table class="t"><thead><tr><th>Nama</th><th>Shift</th><th>Status</th><th>Masuk</th><th>Pulang</th><th>Catatan</th></tr></thead><tbody id="atb"></tbody></table></div>
+  </div>
+  <div class="card">
+    <div class="row sp"><h2 style="margin:0">Kalender Kehadiran — <span id="cl"></span></h2><div><label>Pegawai</label><select id="ce" onchange="calEmp=this.value;renderAtt()"></select></div></div>
+    <p class="mu" style="margin:8px 0">✅ Hadir   ⏰ Terlambat   📄 Izin   🏥 Sakit   ❌ Alpha   🔴 Libur  |  Mode "Semua pegawai": huruf = inisial pegawai. Ketuk tanggal untuk membuka/mengubah absensinya. Bulan mengikuti tanggal di atas.</p>
+    <div class="cal" id="cal"></div>
+  </div>
+  <div class="card">
+    <h2>Rekap Absensi Bulan Ini</h2>
+    <div class="sc"><table class="t"><thead><tr><th>Nama</th><th>Hadir</th><th>Terlambat</th><th>Izin</th><th>Sakit</th><th>Alpha</th><th>Libur</th></tr></thead><tbody id="rec"></tbody></table></div>
+  </div>
+</section>
+
+<section id="vg" class="hide">
+  <div class="card np">
+    <h2>Aturan Pemotongan Gaji</h2>
+    <div class="row">
+      <div><label>Alpha (% tarif harian)</label><input type="number" id="r_alpha" min="0" style="width:120px" onchange="setRule()"></div>
+      <div><label>Izin (% tarif harian)</label><input type="number" id="r_izin" min="0" style="width:120px" onchange="setRule()"></div>
+      <div><label>Sakit (% tarif harian)</label><input type="number" id="r_sakit" min="0" style="width:120px" onchange="setRule()"></div>
+      <div><label>Terlambat (Rp/kejadian)</label><input type="number" id="r_late" min="0" step="1000" style="width:140px" onchange="setRule()"></div>
+    </div>
+    <p class="mu" style="margin-bottom:0">Tarif harian = gaji pokok ÷ jumlah hari kerja bulan itu (semua hari selain Libur di jadwal). Hanya hari yang tercatat di tab Absensi yang dihitung; hari yang belum diisi tidak dipotong.</p>
+  </div>
+  <div class="card">
+    <h2>Rekap Gaji — <span id="gp"></span></h2>
+    <div class="sc"><table class="t"><thead><tr><th>Nama</th><th>Gaji Pokok</th><th>Hari Kerja</th><th>Alpha</th><th>Izin</th><th>Sakit</th><th>Terlambat</th><th>Pot. Absensi</th><th>Kasbon (Rp)</th><th>Gaji Bersih</th></tr></thead><tbody id="gb"></tbody><tfoot id="gf"></tfoot></table></div>
+    <div class="row np" style="margin-top:10px"><button onclick="window.print()">🖨 Print / PDF</button></div>
+  </div>
+</section>
+
+<section id="vn" class="hide">
+  <div class="card np row sp">
+    <div><h2 style="margin:0">Slip Gaji Pegawai</h2><div class="mu">Periode <span id="sp"></span> (ganti bulan di tab Jadwal). Dihitung dari absensi yang tercatat.</div></div>
+    <div class="row"><button class="ib" data-ic="down" onclick="exportSlips()">Export Excel</button><button class="ib p" data-ic="print" onclick="window.print()">Print / PDF</button></div>
+  </div>
+  <div id="sl"></div>
+</section>
+
+<section id="vw" class="hide">
+  <div class="card np">
+    <h2>Ajukan Tukar Jadwal</h2>
+    <p class="mu" style="margin-top:0">Tukar shift jaga atau hari libur dengan rekan pada tanggal yang sama. Pengajuan baru berlaku setelah disetujui Editor/pengelola.</p>
+    <div class="row">
+      <div><label>Pemohon</label><select id="swf" onchange="swPrev()"></select></div>
+      <div><label>Tukar dengan</label><select id="swt" onchange="swPrev()"></select></div>
+      <div><label>Tanggal</label><input type="date" id="swd" onchange="swPrev()"></div>
+    </div>
+    <div style="margin-top:8px"><label>Alasan (opsional)</label><input id="swr" style="width:100%" placeholder="mis. keperluan keluarga"></div>
+    <p id="swp" class="mu" style="margin:8px 0"></p>
+    <button class="p" onclick="swSend()">Kirim Pengajuan</button>
+  </div>
+  <div class="card"><h2>Daftar Pengajuan</h2><div id="swl"></div></div>
+</section>
+
+<section id="vt" class="hide">
+  <div class="card hero">
+    <div class="hi">💊</div>
+    <h2>Sistem Manajemen Absensi dan Gaji Karyawan</h2>
+    <p><b>Sistem Manajemen Absensi dan Gaji Karyawan</b> &mdash; kelola jadwal shift, absensi, gaji, dan slip pegawai dalam satu aplikasi yang ringan, rapi, dan nyaman dipakai di HP maupun komputer.</p>
+    <div><span class="tg">⚡ Jadwal otomatis</span><span class="tg">📝 Absensi &amp; kalender</span><span class="tg">💰 Gaji &amp; slip</span><span class="tg">📱 HP &amp; Desktop</span></div>
+  </div>
+  <div class="fg">
+    <div class="fi"><div class="ic">⚡</div><b>Jadwal otomatis yang dinamis</b><p>Berapa pun jumlah pegawai, shift dibagi otomatis. Jumlah pegawai genap: Pagi dan Siang dibagi rata. Jumlah ganjil: Siang dibuat lebih banyak dari Pagi. Satu klik untuk jadwal sebulan.</p></div>
+    <div class="fi"><div class="ic">🔁</div><b>Jaga 2 hari, giliran adil</b><p>Setiap pegawai jaga 2 hari berturut-turut di shift yang sama dan bergiliran, sehingga jumlah hari Pagi tiap pegawai hampir sama rata.</p></div>
+    <div class="fi"><div class="ic">🗓</div><b>Libur terencana</b><p>Tiap pegawai libur 2x sebulan di Sabtu/Minggu, tersebar merata. Pada hari ada yang libur, pembagian Pagi dan Siang tetap dihitung ulang secara adil.</p></div>
+    <div class="fi"><div class="ic">🤝</div><b>Tukar jadwal</b><p>Pegawai bisa mengajukan tukar jaga atau libur dengan rekan. Jadwal baru berubah setelah pengelola menyetujui.</p></div>
+    <div class="fi"><div class="ic">📝</div><b>Absensi dan kalender</b><p>Catat Hadir, Terlambat, Izin, Sakit, atau Alpha. Ada tombol Hadir Penuh Sebulan dan tampilan kalender bulanan berwarna.</p></div>
+    <div class="fi"><div class="ic">💰</div><b>Gaji dan potongan otomatis</b><p>Potongan dihitung dari absensi, ditambah potongan kasbon. Aturannya bisa kamu atur sendiri.</p></div>
+    <div class="fi"><div class="ic">🧾</div><b>Slip gaji siap bagikan</b><p>Slip tiap pegawai bisa diekspor ke Excel, dicetak ke PDF, atau dijadikan gambar JPEG untuk dikirim lewat WhatsApp.</p></div>
+    <div class="fi"><div class="ic">📲</div><b>Bagikan lewat WhatsApp</b><p>Kirim jadwal bulanan atau jadwal hari ini sebagai teks maupun gambar dalam sekali tekan.</p></div>
+    <div class="fi"><div class="ic">🖥📱</div><b>Dua model tampilan</b><p>Desktop: tabel matriks lengkap seperti Excel. HP: kartu harian yang mudah dibaca, bisa difilter untuk satu pegawai.</p></div>
+    <div class="fi"><div class="ic">🌓</div><b>Mode terang dan gelap</b><p>Ganti tampilan sesuai selera atau kondisi cahaya dengan satu tombol.</p></div>
+    <div class="fi web"><div class="ic">☁️</div><b>Sinkron antar HP</b><p>Jadwal, absensi, dan pengajuan tersimpan di database bersama sehingga semua pegawai melihat data yang sama.</p></div>
+    <div class="fi loc"><div class="ic">🔒</div><b>Data di perangkatmu</b><p>Data tersimpan di perangkat ini sehingga tetap bisa dipakai tanpa koneksi internet.</p></div>
+  </div>
+  <div class="card"><h2>🌟 Keunggulan</h2>
+    <ul class="ul">
+      <li><b>Hemat waktu:</b> jadwal sebulan penuh jadi dalam hitungan detik, tanpa hitung manual.</li>
+      <li><b>Adil dan teratur:</b> pembagian shift dan libur mengikuti aturan yang konsisten untuk semua pegawai.</li>
+      <li><b>Rapi dan jelas:</b> warna shift, penanda akhir pekan, dan baris cek jumlah Pagi/Siang per hari.</li>
+      <li><b>Terhubung:</b> jadwal, absensi, gaji, dan slip saling terhubung sehingga tidak perlu input berulang.</li>
+      <li><b>Fleksibel:</b> bisa ditambah atau dikurangi pegawainya kapan saja, urutannya mudah ditukar, dan jadwal bisa diedit manual dengan sekali klik.</li>
+      <li><b>Mudah dipakai:</b> tampilan sederhana berbahasa Indonesia yang nyaman di layar kecil.</li>
+    </ul>
+  </div>
+  <div class="card"><h2>🚀 Cara mulai</h2>
+    <div class="stp">
+      <div><b>1</b><br>Tambahkan pegawai di menu <i>Jadwal &rarr; Pegawai</i>.</div>
+      <div><b>2</b><br>Tekan <i>Buat Jadwal Otomatis</i> dan sesuaikan jika perlu.</div>
+      <div><b>3</b><br>Catat kehadiran di menu <i>Absensi</i>.</div>
+      <div><b>4</b><br>Atur gaji, lalu cetak atau bagikan <i>Slip Gaji</i>.</div>
+    </div>
+  </div>
+  <div class="card" style="text-align:center"><h2 style="justify-content:center">💬 Butuh bantuan atau ingin berlangganan?</h2>
+    <p class="mu">Hubungi admin lewat WhatsApp untuk pembayaran, pemesanan paket, dan bantuan penggunaan.</p>
+    <button class="p" onclick="contactAdmin()">💬 Hubungi Admin &middot; 0857-5255-7857</button></div>
+  <p class="mu" style="text-align:center">Sistem Manajemen Absensi dan Gaji Karyawan &middot; Versi 1.0</p>
+</section>
+
+<section id="vl" class="hide">
+  <div class="card"><h2>Status Langganan</h2><div id="lst"></div></div>
+  <div class="card np"><h2>Pilih Paket</h2>
+    <div class="plans" id="lplans"></div>
+    <div class="row" style="margin-top:14px"><div style="flex:1;min-width:200px"><label>Nama apotek / pemilik (untuk pesanan)</label><input id="lname" style="width:100%"></div>
+    <div><label>ID Perangkat</label><div class="row"><input id="ldev" readonly style="width:120px;font-family:monospace"><button onclick="licCopyDev()">Salin</button></div></div></div>
+    <p id="lpay" class="mu" style="margin-bottom:0"></p>
+  </div>
+  <div class="card np"><h2>Aktifkan Lisensi</h2>
+    <p class="mu" style="margin-top:0">Tempel kunci lisensi yang dikirim penjual setelah pembayaran, lalu tekan Aktifkan.</p>
+    <textarea id="lkey" rows="4" style="width:100%;font-family:monospace;font-size:12px"></textarea>
+    <div class="row" style="margin-top:8px"><button class="p" onclick="licActivate()">Aktifkan</button></div>
+  </div>
+</section>
+</div>
+
+<div id="me" class="mo hide np"><div class="mb">
+  <div class="row sp"><h2>Kelola Pegawai</h2><button onclick="hideEmp()">Selesai</button></div>
+  <div class="row" style="margin:10px 0"><input id="ne" placeholder="Nama, mis. RINA" style="flex:1;text-transform:uppercase" onkeydown="if(event.key==='Enter')addEmp()"><button class="p" onclick="addEmp()">+ Tambah</button></div>
+  <div id="el"></div>
+</div></div>
+
+<div id="mc" class="mo hide np"><div class="mb">
+  <h2>Buat Jadwal Otomatis?</h2>
+  <p class="mu" style="font-size:13px">Jadwal bulan ini akan disusun ulang untuk berapa pun jumlah pegawai: jumlah pegawai genap dibagi rata Pagi dan Siang; jumlah ganjil, Siang dibuat lebih banyak dari Pagi. Tiap pegawai jaga 2 hari berturut-turut di shift yang sama, libur 2x di Sabtu/Minggu, dan shift Siang hari Jumat menjadi SB. Urutan nama mengikuti daftar pegawai.</p>
+  <div class="row" style="justify-content:flex-end"><button onclick="hide('mc')">Batal</button><button class="a" onclick="hide('mc');if(adm())gen(cy,cm,true)">Ya, Terapkan</button></div>
+</div></div>
+
+<div id="mf" class="mo hide np"><div class="mb">
+  <h2>Hadir Penuh Sebulan</h2>
+  <p class="mu" style="font-size:13px">Mengisi absensi <b id="fm"></b> sesuai jadwal: hari kerja menjadi Hadir (jam sesuai shift), hari libur menjadi Libur.</p>
+  <label>Pegawai</label><select id="fe" style="width:100%"></select>
+  <label style="margin-top:10px;text-transform:none;font-size:13px;color:var(--tx)"><input type="checkbox" id="fo"> Timpa catatan yang sudah ada (Alpha/Izin/Sakit/Terlambat akan hilang)</label>
+  <div class="row" style="justify-content:flex-end;margin-top:12px"><button onclick="hide('mf')">Batal</button><button class="p" onclick="doFull()">Ya, Isi Penuh</button></div>
+</div></div>
+
+<div id="mi" class="mo hide np"><div class="mb" style="max-width:720px">
+  <div class="row sp"><h2>Pratinjau Gambar</h2><button onclick="hide('mi')">×</button></div>
+  <div style="overflow:auto;max-height:60vh;margin:8px 0;border:1px solid var(--bd)"><img id="pv" alt="Pratinjau" style="display:block;width:100%"></div>
+  <p class="mu" style="margin:0 0 8px">Simpan gambar lalu kirim lewat WhatsApp, atau tekan Bagikan jika perangkat mendukung.</p>
+  <div class="row" style="justify-content:flex-end"><button onclick="saveImg()">💾 Simpan JPEG</button><button class="p" onclick="shareImg()">Bagikan ↗</button></div>
+</div></div>
+
+<div id="mw" class="mo hide np"><div class="mb">
+  <div class="row sp"><h2>📲 Bagikan ke WhatsApp</h2><button onclick="hide('mw')">×</button></div>
+  <div class="row" style="margin:8px 0"><button id="w1" class="p" onclick="setWA('month')" style="flex:1">1 Bulan</button><button id="w2" onclick="setWA('today')" style="flex:1">Hari Ini</button></div>
+  <textarea id="wt" rows="10" style="width:100%;font-family:monospace;font-size:12px"></textarea>
+  <div class="row" style="justify-content:flex-end;margin-top:8px"><button onclick="copyWA()">📋 Salin</button><button class="p" onclick="sendWA()">Kirim via WhatsApp ↗</button></div>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+window.APP_MANDIRI=true;
+// Mode mandiri (tanpa claude.ai): unduhan lewat browser, atau menu Bagikan di aplikasi Android
+window.claude={use:async function(n){
+  if(n!=='downloads')return null;
+  return {save:async function(r){
+    var blob=r.data instanceof Blob?r.data:new Blob([r.data]);
+    var C=window.Capacitor;
+    if(C&&C.isNativePlatform&&C.isNativePlatform()){
+      var b64=await new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1])};f.onerror=rej;f.readAsDataURL(blob)});
+      var P=C.Plugins;
+      await P.Filesystem.writeFile({path:r.filename,data:b64,directory:'CACHE'});
+      var u=await P.Filesystem.getUri({path:r.filename,directory:'CACHE'});
+      await P.Share.share({title:r.filename,url:u.uri});
+      return {status:'delivered'};
+    }
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=r.filename;
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
+    return {status:'saved'};
+  }};
+}};
+</script>
+<script>
+var KEY='apotek_galaxy_app_v1',MN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'],DS=['Min','Sen','Sel','Rab','Kam','Jum','Sab'],DF=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+var st={title:'JADWAL KERJA APOTEK',employees:['LIZA','SURI','ALIYA'],schedules:{},attendance:{},swaps:{},payroll:{base:{LIZA:1200000,SURI:1300000,ALIYA:1400000},rules:{alpha:100,izin:100,sakit:100,late:0}}};
+var now=new Date(),cy=now.getFullYear(),cm=now.getMonth(),wm='month';
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function nt(t){return t===('JADWAL KERJA APOTEK'+' GALAXY')?'JADWAL KERJA APOTEK':t}
+function load(){try{var s=localStorage.getItem(KEY);if(s)st=Object.assign(st,JSON.parse(s))}catch(e){}st.title=nt(st.title)}
+var db=null,usr=null,ready=false,canW=false,seeded=false;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function adm(){if(!db||canW)return true;toast('Hanya pengelola (Editor) yang dapat mengubah jadwal & pegawai.');return false}
+function setSync(t){$('sync').textContent=t}
+function wr(path,data){if(!db)return;db.doc(path).set(data).catch(function(e){toast('Gagal menyimpan: '+((e&&e.message)||'tidak ada izin'))})}
+function pushCfg(){save();if(db&&canW)wr('app/config',{title:st.title,employees:st.employees})}
+function pushSched(k){save();if(db&&canW)wr('schedules/'+k,{data:st.schedules[k]})}
+function pushAtt(ds){save();wr('attendance/'+ds,{data:st.attendance[ds]})}
+function pushPay(){save();if(db&&canW)wr('payroll/config',{base:st.payroll.base,rules:st.payroll.rules,adv:st.payroll.adv||{}})}
+function moveEmp(i,dx){
+  if(!adm())return;
+  var a=st.employees,j=i+dx;if(j<0||j>=a.length)return;
+  var t=a[i];a[i]=a[j];a[j]=t;
+  pushCfg();renderEmp();renderAll();
+}
+function pushSwap(id){save();wr('swaps/'+id,st.swaps[id])}
+function swCodes(f,t,ds){
+  var p=ds.split('-'),y=+p[0],m=+p[1]-1,d=+p[2];ensure(y,m);
+  var S=st.schedules[pk(y,m)]||{};
+  return [(S[f]||[])[d-1]||'-',(S[t]||[])[d-1]||'-'];
+}
+function swPrev(){
+  var f=$('swf').value,t=$('swt').value,ds=$('swd').value;
+  if(!f||!t||!ds){$('swp').textContent='';return}
+  if(f===t){$('swp').textContent='Pilih dua pegawai yang berbeda.';return}
+  var c=swCodes(f,t,ds);
+  $('swp').textContent=c[0]===c[1]?'Jadwal keduanya sama pada tanggal ini ('+c[0]+'), tidak perlu ditukar.':f+': '+c[0]+' → '+c[1]+'   |   '+t+': '+c[1]+' → '+c[0];
+}
+function renderSwap(){
+  var o=st.employees.map(function(e){return '<option>'+esc(e)+'</option>'}).join(''),f=$('swf'),t=$('swt'),fv=f.value,tv=t.value;
+  f.innerHTML=o;t.innerHTML=o;
+  if(st.employees.indexOf(fv)>-1)f.value=fv;
+  if(st.employees.indexOf(tv)>-1)t.value=tv;else if(st.employees.length>1)t.selectedIndex=1;
+  if(!$('swd').value){var n=new Date();$('swd').value=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')}
+  swPrev();renderSwapList();
+}
+function renderSwapList(){
+  var ids=Object.keys(st.swaps).sort(function(a,b){return (st.swaps[b].created||0)-(st.swaps[a].created||0)});
+  $('swl').innerHTML=ids.map(function(id){
+    var s=st.swaps[id],p=String(s.date).split('-'),pc=s.status==='disetujui'?'ok':s.status==='menunggu'?'wr':'',b='';
+    if(s.status==='menunggu'){
+      if(canW||!db)b+='<button class="p" onclick="swOk(\''+id+'\')">Setujui</button> <button onclick="swNo(\''+id+'\')">Tolak</button> ';
+      b+='<button onclick="swCancel(\''+id+'\')">Batalkan</button>';
+    }
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--bd)"><div class="row sp" style="align-items:center"><div><b>'+esc(s.from)+'</b> ('+esc(s.fromCode)+') ⇄ <b>'+esc(s.to)+'</b> ('+esc(s.toCode)+')<div class="mu">'+(+p[2])+' '+MN[+p[1]-1]+' '+p[0]+(s.reason?' · '+esc(s.reason):'')+'</div></div><span class="pill '+pc+'" style="'+(pc?'':'background:var(--soft)')+'">'+esc(s.status)+'</span></div>'+(b?'<div class="row" style="margin-top:6px">'+b+'</div>':'')+'</div>';
+  }).join('')||'<p class="mu">Belum ada pengajuan.</p>';
+}
+function swSend(){
+  var f=$('swf').value,t=$('swt').value,ds=$('swd').value;
+  if(!f||!t||!ds||f===t)return toast('Lengkapi pemohon, rekan, dan tanggal.');
+  var c=swCodes(f,t,ds);
+  if(c[0]===c[1])return toast('Jadwal keduanya sama, tidak perlu ditukar.');
+  var id='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  st.swaps[id]={from:f,to:t,date:ds,reason:$('swr').value.trim(),fromCode:c[0],toCode:c[1],status:'menunggu',created:Date.now()};
+  pushSwap(id);$('swr').value='';renderSwapList();toast('Pengajuan terkirim, menunggu persetujuan.');
+}
+function swOk(id){
+  if(!adm())return;
+  var s=st.swaps[id];if(!s||s.status!=='menunggu')return;
+  var p=s.date.split('-'),y=+p[0],m=+p[1]-1,d=+p[2],k=pk(y,m);ensure(y,m);
+  var S=st.schedules[k];
+  if(!S||!S[s.from]||!S[s.to])return toast('Pegawai atau jadwal tidak ditemukan.');
+  var a=S[s.from][d-1],b=S[s.to][d-1];
+  S[s.from][d-1]=b;S[s.to][d-1]=a;
+  s.fromCode=a;s.toCode=b;s.status='disetujui';
+  pushSched(k);pushSwap(id);renderAll();renderSwapList();toast('Tukar jadwal disetujui dan jadwal diperbarui.');
+}
+function swNo(id){if(!adm())return;var s=st.swaps[id];if(!s)return;s.status='ditolak';pushSwap(id);renderSwapList()}
+function swCancel(id){var s=st.swaps[id];if(!s||s.status!=='menunggu')return;s.status='dibatalkan';pushSwap(id);renderSwapList()}
+function curTheme(){var t=document.documentElement.getAttribute('data-theme');if(t)return t;return (window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light'}
+var ICO={
+cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+clip:'<rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 2h6v4H9zM9 14l2 2 4-4"/>',
+wal:'<path d="M3 7a2 2 0 0 1 2-2h12v4"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3"/><path d="M21 9h-6a2 2 0 0 0 0 4h6z"/>',
+rcpt:'<path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/>',
+swap:'<path d="M7 7h13l-3-3M17 17H4l3 3"/>',
+star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+pal:'<path d="M12 3a9 9 0 1 0 0 18c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2H18a3 3 0 0 0 3-3c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7" r="1"/>',
+print:'<path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/>',
+share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/>',
+bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4.5 5"/>',
+img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 17l-5-5-9 8"/>',
+mon:'<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
+ph:'<rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/>',
+down:'<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>',
+check:'<path d="M4 12l5 5L20 6"/>'};
+function ic(n){return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+(ICO[n]||'')+'</svg>'}
+function decorate(){document.querySelectorAll('[data-ic]').forEach(function(el){if(el.dataset.done)return;el.dataset.done='1';el.insertAdjacentHTML('afterbegin',ic(el.dataset.ic))})}
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);var b=$('tt');if(b){b.innerHTML=ic(t==='dark'?'sun':'moon');b.dataset.done='1'}}
+function toggleTheme(){var t=curTheme()==='dark'?'light':'dark';applyTheme(t);try{localStorage.setItem(KEY+'_theme',t)}catch(e){}}
+function applyPal(p){document.documentElement.setAttribute('data-pal',p)}
+function togglePal(){var p=document.documentElement.getAttribute('data-pal')==='cool'?'hijau':'cool';applyPal(p);try{localStorage.setItem(KEY+'_pal',p)}catch(e){}toast('Tema: '+(p==='cool'?'Cool Biru-Hijau':'Hijau Segar'))}
+function contactAdmin(){window.open('https://wa.me/6285752557857?text='+encodeURIComponent('Halo Admin, saya ingin bertanya / berlangganan aplikasi Sistem Manajemen Absensi dan Gaji Karyawan.'),'_blank')}
+function renderAbout(){
+  var sa=!!window.APP_MANDIRI;
+  document.querySelectorAll('#vt .web').forEach(function(x){x.style.display=sa?'none':''});
+  document.querySelectorAll('#vt .loc').forEach(function(x){x.style.display=sa?'':'none'});
+}
+function rp(n){return 'Rp '+Math.round(n).toLocaleString('id-ID')}
+function calc(e){
+  var r=st.payroll.rules,n=dim(cy,cm),mm=String(cm+1).padStart(2,'0'),S=(st.schedules[pk(cy,cm)]||{})[e]||[];
+  var base=st.payroll.base[e]||0,wd=0,rec=0,c={Hadir:0,Terlambat:0,Izin:0,Sakit:0,Alpha:0},off=[];
+  for(var d=1;d<=n;d++){
+    if((S[d-1]||'S')==='L')continue;
+    wd++;
+    var a=(st.attendance[cy+'-'+mm+'-'+String(d).padStart(2,'0')]||{})[e];
+    if(a&&c[a.status]!==undefined){c[a.status]++;rec++;if(a.status==='Izin'||a.status==='Sakit'||a.status==='Alpha')off.push(d+' '+MN[cm].slice(0,3)+' ('+a.status+')')}
+  }
+  var daily=wd?base/wd:0;
+  var dA=daily*c.Alpha*r.alpha/100,dI=daily*c.Izin*r.izin/100,dS=daily*c.Sakit*r.sakit/100,dT=c.Terlambat*r.late;
+  var tot=Math.min(base,dA+dI+dS+dT),kas=Math.min(getAdv(e),base-tot);
+  return {e:e,base:base,wd:wd,rec:rec,c:c,off:off,daily:daily,dA:dA,dI:dI,dS:dS,dT:dT,tot:tot,kas:kas,net:base-tot-kas,r:r};
+}
+function slipRows(x){
+  var c=x.c,r=x.r;
+  return [['SLIP GAJI - '+MN[cm].toUpperCase()+' '+cy],[st.title],[],
+  ['Nama',x.e],['Gaji pokok',Math.round(x.base)],['Hari kerja (sesuai jadwal)',x.wd],['Hari masuk (hadir + terlambat)',c.Hadir+c.Terlambat],
+  ['Alpha (hari)',c.Alpha],['Izin (hari)',c.Izin],['Sakit (hari)',c.Sakit],['Terlambat (kali)',c.Terlambat],['Hari belum tercatat (tidak dipotong)',x.wd-x.rec],
+  ['Tarif harian',Math.round(x.daily)],[],
+  ['Potongan Alpha ('+r.alpha+'%)',-Math.round(x.dA)],['Potongan Izin ('+r.izin+'%)',-Math.round(x.dI)],['Potongan Sakit ('+r.sakit+'%)',-Math.round(x.dS)],['Potongan Terlambat',-Math.round(x.dT)],['Potongan Kasbon',-Math.round(x.kas)],
+  ['Total potongan',-Math.round(x.tot+x.kas)],['GAJI DITERIMA',Math.round(x.net)],[],
+  ['Tanggal tidak masuk',x.off.join(', ')||'-']];
+}
+function renderSlips(){
+  $('sp').textContent=MN[cm]+' '+cy;
+  var tgl=new Date().toLocaleDateString('id-ID');
+  $('sl').innerHTML=st.employees.map(function(e,i){
+    var x=calc(e),r=x.r,c=x.c;
+    function L(a,b,s){return '<tr><td>'+a+'</td><td style="text-align:right;'+(s||'')+'">'+b+'</td></tr>'}
+    return '<div class="slip" id="slip'+i+'"><h3>'+esc(st.title)+'</h3>'+
+    '<div style="text-align:center;font-weight:700;margin-bottom:8px">SLIP GAJI &mdash; '+MN[cm].toUpperCase()+' '+cy+'</div>'+
+    '<table class="t"><tbody>'+
+    L('Nama','<b>'+esc(e)+'</b>')+L('Gaji pokok',rp(x.base))+L('Hari kerja (sesuai jadwal)',x.wd+' hari')+
+    L('Hari masuk (hadir + terlambat)',(c.Hadir+c.Terlambat)+' hari')+
+    L('Tidak masuk: Alpha / Izin / Sakit',c.Alpha+' / '+c.Izin+' / '+c.Sakit+' hari')+
+    L('Terlambat',c.Terlambat+' kali')+
+    L('Hari belum tercatat absensi',(x.wd-x.rec)+' hari (tidak dipotong)')+
+    L('Tarif harian',rp(x.daily))+
+    L('Potongan Alpha ('+c.Alpha+' x '+r.alpha+'%)','- '+rp(x.dA),'color:#e11d48')+
+    L('Potongan Izin ('+c.Izin+' x '+r.izin+'%)','- '+rp(x.dI),'color:#e11d48')+
+    L('Potongan Sakit ('+c.Sakit+' x '+r.sakit+'%)','- '+rp(x.dS),'color:#e11d48')+
+    L('Potongan Terlambat ('+c.Terlambat+' x '+rp(r.late)+')','- '+rp(x.dT),'color:#e11d48')+
+    L('Potongan Kasbon','- '+rp(x.kas),'color:#e11d48')+L('<b>Total potongan</b>','<b>- '+rp(x.tot+x.kas)+'</b>','color:#e11d48')+
+    L('<b>GAJI DITERIMA</b>','<b style="font-size:16px">'+rp(x.net)+'</b>')+
+    '</tbody></table>'+
+    '<p class="mu" style="margin:8px 0 0">Tanggal tidak masuk: '+(x.off.length?esc(x.off.join(', ')):'-')+'</p>'+
+    '<p class="mu" style="margin:2px 0 0">Dicetak: '+tgl+'</p>'+
+    '<div class="sg"><div>Pegawai</div><div>Pemilik / Pengelola</div></div>'+
+    '<div class="np" style="text-align:right;margin-top:10px"><button onclick="imgSlip('+i+')">🖼 JPEG (WhatsApp)</button> <button onclick="printSlip('+i+')">🖨 Print slip ini</button></div></div>';
+  }).join('')||'<div class="card">Belum ada pegawai.</div>';
+}
+var imgBlob=null,imgName='gambar.jpg';
+function cv(w,h){var c=document.createElement('canvas');c.width=w*2;c.height=h*2;var x=c.getContext('2d');x.scale(2,2);x.fillStyle='#fff';x.fillRect(0,0,w,h);x.textBaseline='middle';return {c:c,x:x}}
+function ft(x,s,b){x.font=(b?'bold ':'')+s+'px Arial, sans-serif'}
+function cell(x,px,py,w,h,bg,fg,t,b,sz,al){
+  if(bg){x.fillStyle=bg;x.fillRect(px,py,w,h)}
+  x.strokeStyle='#475569';x.lineWidth=1;x.strokeRect(px,py,w,h);
+  x.fillStyle=fg;ft(x,sz,b);x.textAlign=al||'center';
+  x.fillText(t,al==='left'?px+8:px+w/2,py+h/2+1);
+}
+var SC={P:['#FFFF00','#000'],S:['#00B0F0','#000'],SB:['#92D050','#000'],L:['#FF0000','#fff']};
+function legend(x,px,py){
+  var it=[['P','PAGI 07:00 - 14:00'],['S','SIANG 14:00 - 21:00'],['L','LIBUR'],['SB','SIANG BERSIH-BERSIH RAK (JUMAT)']];
+  x.textAlign='left';ft(x,13,1);x.fillStyle='#000';x.fillText('KETERANGAN',px,py);
+  it.forEach(function(a,i){
+    var yy=py+26+i*28;cell(x,px,yy-11,40,22,SC[a[0]][0],SC[a[0]][1],a[0],1,12);
+    x.textAlign='left';ft(x,13,0);x.fillStyle='#000';x.fillText(a[1],px+52,yy);
+  });
+}
+function showImg(o,name){
+  var u=o.c.toDataURL('image/jpeg',0.92);
+  var p=u.split(','),bin=atob(p[1]),a=new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);
+  imgBlob=new Blob([a],{type:'image/jpeg'});imgName=name;
+  $('pv').src=u;show('mi');
+}
+function fname(s){return s.replace(/[^a-zA-Z0-9-]+/g,'-').toLowerCase()}
+function imgMonth(){
+  var n=dim(cy,cm),S=st.schedules[pk(cy,cm)]||{},E=st.employees,cw=36,nw=120,m=24,rh=34,W=m*2+nw+cw*n,H=m+70+rh*2+rh*E.length+190;
+  var o=cv(W,H),x=o.x;
+  x.fillStyle='#000';x.textAlign='center';ft(x,24,1);x.fillText(st.title,W/2,m+16);
+  ft(x,15,1);x.fillText('PERIODE: '+MN[cm].toUpperCase()+' '+cy,W/2,m+46);
+  var y=m+70;
+  cell(x,m,y,nw,rh*2,'#e2e8f0','#000','NAMA',1,14);
+  for(var d=1;d<=n;d++){
+    var w=new Date(cy,cm,d).getDay(),bg=(w===0||w===6)?'#ffe4e6':w===5?'#d1fae5':'#f1f5f9',fg=(w===0||w===6)?'#be123c':w===5?'#065f46':'#0f172a';
+    cell(x,m+nw+(d-1)*cw,y,cw,rh,bg,fg,String(d),1,14);
+    cell(x,m+nw+(d-1)*cw,y+rh,cw,rh,bg,fg,DS[w],0,11);
+  }
+  E.forEach(function(e,i){
+    var yy=y+rh*2+i*rh;cell(x,m,yy,nw,rh,'#fff','#000',e,1,14,'left');
+    for(var d=0;d<n;d++){var c=((S[e]||[])[d])||'S';cell(x,m+nw+d*cw,yy,cw,rh,SC[c][0],SC[c][1],c,1,14)}
+  });
+  legend(x,m,y+rh*2+E.length*rh+30);
+  showImg(o,'jadwal-bulanan-'+fname(MN[cm])+'-'+cy+'.jpg');
+}
+function imgDay(){
+  var t=new Date(),y=t.getFullYear(),m=t.getMonth(),d=t.getDate();ensure(y,m);
+  var S=st.schedules[pk(y,m)]||{},E=st.employees,W=640,rh=58,H=150+rh*E.length+110;
+  var o=cv(W,H),x=o.x;
+  x.fillStyle='#000';x.textAlign='center';ft(x,24,1);x.fillText(st.title,W/2,40);
+  ft(x,16,1);x.fillText('JADWAL HARI INI',W/2,72);
+  ft(x,15,0);x.fillText(DF[t.getDay()]+', '+d+' '+MN[m]+' '+y,W/2,98);
+  E.forEach(function(e,i){
+    var yy=125+i*rh;
+    x.strokeStyle='#cbd5e1';x.lineWidth=1;x.strokeRect(24,yy,W-48,rh-8);
+    x.textAlign='left';x.fillStyle='#000';ft(x,18,1);x.fillText(e,40,yy+(rh-8)/2);
+    var c=((S[e]||[])[d-1])||'-',sc=SC[c]||['#e2e8f0','#000'];
+    cell(x,230,yy+9,50,rh-26,sc[0],sc[1],c,1,16);
+    x.textAlign='left';x.fillStyle='#000';ft(x,15,0);x.fillText(full(c),296,yy+(rh-8)/2);
+  });
+  var fy=125+E.length*rh+16;x.textAlign='left';ft(x,12,0);x.fillStyle='#475569';
+  x.fillText('P = Pagi 07:00-14:00 | S = Siang 14:00-21:00 | SB = Bersih rak (Jumat) | L = Libur',24,fy);
+  showImg(o,'jadwal-hari-ini-'+y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0')+'.jpg');
+}
+function imgSlip(i){
+  var e=st.employees[i],q=calc(e),c=q.c,r=q.r,R='#e11d48';
+  var rows=[['Nama',e],['Gaji pokok',rp(q.base)],['Hari kerja (sesuai jadwal)',q.wd+' hari'],['Hari masuk (hadir + terlambat)',(c.Hadir+c.Terlambat)+' hari'],
+  ['Tidak masuk: Alpha / Izin / Sakit',c.Alpha+' / '+c.Izin+' / '+c.Sakit+' hari'],['Terlambat',c.Terlambat+' kali'],['Hari belum tercatat (tidak dipotong)',(q.wd-q.rec)+' hari'],['Tarif harian',rp(q.daily)],
+  ['Potongan Alpha ('+c.Alpha+' x '+r.alpha+'%)','- '+rp(q.dA),R],['Potongan Izin ('+c.Izin+' x '+r.izin+'%)','- '+rp(q.dI),R],['Potongan Sakit ('+c.Sakit+' x '+r.sakit+'%)','- '+rp(q.dS),R],['Potongan Terlambat ('+c.Terlambat+' x '+rp(r.late)+')','- '+rp(q.dT),R],['Potongan Kasbon','- '+rp(q.kas),R],
+  ['TOTAL POTONGAN','- '+rp(q.tot+q.kas),R,1],['GAJI DITERIMA',rp(q.net),'#047857',1]];
+  var W=700,rh=36,tx=document.createElement('canvas').getContext('2d');ft(tx,13,0);
+  var lines=wrapT(tx,'Tanggal tidak masuk: '+(q.off.length?q.off.join(', '):'-'),W-64);
+  var H=130+rows.length*rh+30+lines.length*20+50;
+  var o=cv(W,H),x=o.x;
+  x.fillStyle='#000';x.textAlign='center';ft(x,22,1);x.fillText(st.title,W/2,36);
+  ft(x,15,1);x.fillText('SLIP GAJI - '+MN[cm].toUpperCase()+' '+cy,W/2,66);
+  rows.forEach(function(a,k){
+    var yy=96+k*rh;
+    if(a[3]){x.fillStyle='#f1f5f9';x.fillRect(32,yy,W-64,rh)}
+    x.strokeStyle='#e2e8f0';x.lineWidth=1;x.beginPath();x.moveTo(32,yy+rh);x.lineTo(W-32,yy+rh);x.stroke();
+    x.textAlign='left';x.fillStyle='#000';ft(x,15,a[3]?1:0);x.fillText(a[0],40,yy+rh/2);
+    x.textAlign='right';x.fillStyle=a[2]||'#000';ft(x,a[3]?17:15,(a[3]||k===0)?1:0);x.fillText(a[1],W-40,yy+rh/2);
+  });
+  var by=96+rows.length*rh+26;x.textAlign='left';x.fillStyle='#475569';ft(x,13,0);
+  lines.forEach(function(l,k){x.fillText(l,32,by+k*20)});
+  x.fillText('Dicetak: '+new Date().toLocaleDateString('id-ID'),32,by+lines.length*20+14);
+  showImg(o,'slip-gaji-'+fname(e)+'-'+fname(MN[cm])+'-'+cy+'.jpg');
+}
+function wrapT(x,t,mw){var w=t.split(' '),l=[],cur='';w.forEach(function(s){var tt=cur?cur+' '+s:s;if(x.measureText(tt).width>mw&&cur){l.push(cur);cur=s}else cur=tt});if(cur)l.push(cur);return l}
+async function saveImg(){
+  var d=await claude.use('downloads');
+  if(!d){toast('Fitur unduh tidak tersedia. Tekan lama gambar lalu pilih Simpan.');return}
+  try{await d.save({filename:imgName,data:imgBlob});toast('Gambar disimpan.')}
+  catch(e){if(!(e&&e.code==='declined'))toast('Gagal menyimpan. Tekan lama gambar lalu pilih Simpan.')}
+}
+async function shareImg(){
+  try{
+    var f=new File([imgBlob],imgName,{type:'image/jpeg'});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:imgName});return}
+  }catch(e){if(e&&e.name==='AbortError')return}
+  toast('Bagikan langsung tidak didukung di sini. Simpan gambar lalu kirim lewat WhatsApp.');
+}
+function printSlip(i){
+  var s=$('slip'+i);document.body.classList.add('po');s.classList.add('sel');
+  window.print();
+  setTimeout(function(){document.body.classList.remove('po');s.classList.remove('sel')},800);
+}
+async function exportSlips(){
+  var d=await claude.use('downloads');
+  if(!d){toast('Fitur unduh tidak tersedia di tampilan ini.');return}
+  var X=st.employees.map(calc),fn='slip-gaji-'+MN[cm].toLowerCase()+'-'+cy;
+  var rekap=[['REKAP GAJI '+MN[cm].toUpperCase()+' '+cy],[],['Nama','Gaji Pokok','Hari Kerja','Hadir','Alpha','Izin','Sakit','Terlambat','Pot. Absensi','Kasbon','Gaji Diterima']];
+  X.forEach(function(x){rekap.push([x.e,Math.round(x.base),x.wd,x.c.Hadir+x.c.Terlambat,x.c.Alpha,x.c.Izin,x.c.Sakit,x.c.Terlambat,Math.round(x.tot),Math.round(x.kas),Math.round(x.net)])});
+  try{
+    if(!window.XLSX)throw {code:'no_lib'};
+    var wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rekap),'Rekap');
+    X.forEach(function(x,i){
+      var ws=XLSX.utils.aoa_to_sheet(slipRows(x));ws['!cols']=[{wch:38},{wch:26}];
+      XLSX.utils.book_append_sheet(wb,ws,(x.e.replace(/[\[\]:*?\/\\]/g,'').slice(0,31))||('Pegawai'+(i+1)));
+    });
+    var out=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+    await d.save({filename:fn+'.xlsx',data:out});
+    toast('File Excel disimpan.');
+  }catch(e){
+    if(e&&e.code==='declined')return;
+    try{
+      var csv='\ufeff'+rekap.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');
+      await d.save({filename:fn+'.csv',data:csv});
+      toast('Excel tidak tersedia, rekap disimpan sebagai CSV (bisa dibuka di Excel).');
+    }catch(e2){if(!(e2&&e2.code==='declined'))toast('Gagal mengunduh file.')}
+  }
+}
+function setRule(){
+  if(!adm())return renderPay();
+  ['alpha','izin','sakit','late'].forEach(function(k){st.payroll.rules[k]=Math.max(0,+$('r_'+k).value||0)});
+  pushPay();renderPay();
+}
+function setBase(i,v){if(!adm())return renderPay();st.payroll.base[st.employees[i]]=Math.max(0,+v||0);pushPay();renderPay()}
+function getAdv(e){return ((st.payroll.adv||{})[pk(cy,cm)]||{})[e]||0}
+function setAdv(i,v){
+  if(!adm())return renderPay();
+  var k=pk(cy,cm),e=st.employees[i];
+  if(!st.payroll.adv)st.payroll.adv={};
+  if(!st.payroll.adv[k])st.payroll.adv[k]={};
+  st.payroll.adv[k][e]=Math.max(0,+v||0);
+  pushPay();renderPay();renderSlips();
+}
+function renderPay(){
+  var r=st.payroll.rules;
+  ['alpha','izin','sakit','late'].forEach(function(k){$('r_'+k).value=r[k]});
+  $('gp').textContent=MN[cm]+' '+cy;
+  var h='',tb=0,ta=0,tk=0,tn=0;
+  st.employees.forEach(function(e,i){
+    var x=calc(e),c=x.c;
+    tb+=x.base;ta+=x.tot;tk+=x.kas;tn+=x.net;
+    h+='<tr><td><b>'+esc(e)+'</b></td><td><input type="number" min="0" step="50000" value="'+x.base+'" style="width:120px" onchange="setBase('+i+',this.value)"></td><td>'+x.wd+'</td><td>'+c.Alpha+'</td><td>'+c.Izin+'</td><td>'+c.Sakit+'</td><td>'+c.Terlambat+'</td><td style="color:#e11d48">'+rp(x.tot)+'</td><td><input type="number" min="0" step="10000" value="'+getAdv(e)+'" style="width:110px" title="Kasbon bulan ini; dipotong dari sisa gaji" onchange="setAdv('+i+',this.value)"></td><td><b>'+rp(x.net)+'</b></td></tr>';
+  });
+  $('gb').innerHTML=h;
+  $('gf').innerHTML='<tr><th>TOTAL</th><th>'+rp(tb)+'</th><th colspan="5"></th><th style="color:#e11d48">'+rp(ta)+'</th><th style="color:#e11d48">'+rp(tk)+'</th><th>'+rp(tn)+'</th></tr>';
+}
+function rerender(){
+  ensure(cy,cm);
+  var f=document.activeElement;
+  if(f&&($('atb').contains(f)||$('vg').contains(f))){renderSched();renderSum()}else renderAll();
+}
+function seed(){pushPay();pushCfg();Object.keys(st.schedules).forEach(pushSched);Object.keys(st.attendance).forEach(pushAtt)}
+async function initDb(){
+  try{
+    var c=await claude.use('db');usr=await claude.use('user');
+    if(!c){setSync('Mode lokal (data hanya di perangkat ini)');return}
+    db=c;canW=usr?usr.canEdit():false;if(!canW){$('tg').classList.add('hide');$('tn').classList.add('hide');$('bf').classList.add('hide')}
+    setSync('Menyinkronkan...');
+    var t=setTimeout(function(){setSync('Sinkronisasi lambat, menunggu koneksi...')},10000);
+    var er=function(){setSync('Tidak ada akses ke data bersama')};
+    db.doc('app/config').onSnapshot(function(s){
+      clearTimeout(t);
+      if(s.exists){var d=s.data();if(d.employees)st.employees=d.employees;if(d.title){st.title=nt(d.title);$('ttl').textContent=st.title}}
+      else if(canW&&!seeded){seeded=true;seed()}
+      setSync((canW?'☁ Tersinkron (Editor)':'☁ Tersinkron (hanya absensi)'));rerender();
+    },er);
+    db.collection('schedules').onSnapshot(function(q){
+      q.docs.forEach(function(d){var v=d.data();if(v&&v.data)st.schedules[d.id]=v.data});
+      ready=true;rerender();
+    },er);
+    db.collection('attendance').onSnapshot(function(q){
+      q.docs.forEach(function(d){var v=d.data();if(v&&v.data)st.attendance[d.id]=v.data});
+      rerender();
+    },er);
+    db.collection('swaps').onSnapshot(function(q){
+      q.docs.forEach(function(d){st.swaps[d.id]=d.data()});
+      renderSwapList();
+    },er);
+    if(canW)db.doc('payroll/config').onSnapshot(function(s){
+      if(s.exists){var d=s.data();if(d.base)st.payroll.base=d.base;if(d.adv)st.payroll.adv=d.adv;if(d.rules)Object.assign(st.payroll.rules,d.rules);rerender()}
+    },er);
+  }catch(e){setSync('Mode lokal')}
+}
+function pk(y,m){return y+'-'+m}
+function dim(y,m){return new Date(y,m+1,0).getDate()}
+function full(c){return c==='P'?'Pagi (07:00-14:00)':c==='S'?'Siang (14:00-21:00)':c==='SB'?'Siang Bersih Rak':c==='L'?'Libur':c}
+function toast(m){var c=$('toast'),k=c.lastChild;if(k&&k.textContent===m)return;var d=document.createElement('div');d.textContent=m;while(c.children.length>=3)c.removeChild(c.firstChild);c.appendChild(d);setTimeout(function(){if(d.parentNode)d.remove()},3200)}
+function show(i){$(i).classList.remove('hide')}
+function hide(i){$(i).classList.add('hide')}
+
+window.addEventListener('DOMContentLoaded',function(){
+  decorate();
+  var th0=null;try{th0=localStorage.getItem(KEY+'_theme')}catch(e){}
+  applyTheme(th0||curTheme());
+  var pl0=null;try{pl0=localStorage.getItem(KEY+'_pal')}catch(e){}applyPal(pl0||'cool');
+  try{var sv=localStorage.getItem(KEY+'_view');if(sv)schedView=sv}catch(e){}
+  load();
+  $('sm').innerHTML=MN.map(function(n,i){return '<option value="'+i+'">'+n+'</option>'}).join('');
+  var o='';for(var y=cy-2;y<=cy+3;y++)o+='<option>'+y+'</option>';$('sy').innerHTML=o;
+  $('sm').value=cm;$('sy').value=cy;$('ttl').textContent=st.title;
+  attToday(false);ensure(cy,cm);renderAll();initDb();
+});
+
+function ensure(y,m){
+  if(db&&!ready)return;
+  var k=pk(y,m),n=dim(y,m);
+  if(!st.schedules[k])st.schedules[k]={};
+  var need=st.employees.some(function(e){return !st.schedules[k][e]||st.schedules[k][e].length!==n});
+  if(need)gen(y,m,false);
+}
+
+// Jumlah Pagi dari w pegawai yang bekerja: genap dibagi rata, ganjil -> Siang lebih banyak
+function shiftTarget(w,N){return N===1?w:Math.floor(w/2)}
+function genSched(y,m,E){
+  var n=new Date(y,m+1,0).getDate(),N=E.length,we=[];
+  for(var d=0;d<n;d++){var w=new Date(y,m,d+1).getDay();if(w===0||w===6)we.push(d)}
+  var lv={};E.forEach(function(e){lv[e]=new Set()});
+  if(N>1&&we.length){
+    var T=2*N;
+    for(var j=0;j<T;j++){
+      var idx=T>1?Math.round(j*(we.length-1)/(T-1)):0,e=E[j%N],tries=0;
+      while(lv[e].has(we[idx%we.length])&&tries<we.length){idx++;tries++}
+      lv[e].add(we[idx%we.length]);
+    }
+  }
+  var S={},ps={};
+  E.forEach(function(e){S[e]=new Array(n).fill('S');ps[e]={run:0,last:-99,pc:0}});
+  for(var d=0;d<n;d++){
+    var fri=new Date(y,m,d+1).getDay()===5,W=[];
+    E.forEach(function(e){if(lv[e].has(d)){S[e][d]='L';ps[e].run=0}else W.push(e)});
+    var kd=shiftTarget(W.length,N);
+    var pri=function(e){var r=ps[e].run;return r===1?0:(r>=2?3:1)};
+    var ord=W.slice().sort(function(a,b){
+      return pri(a)-pri(b)||(pri(a)===1?ps[a].pc-ps[b].pc:0)||ps[a].last-ps[b].last||E.indexOf(a)-E.indexOf(b)});
+    var P=new Set(ord.slice(0,kd));
+    W.forEach(function(e){
+      var x=ps[e];
+      if(P.has(e)){x.run=(x.run>=1&&x.last===d-1)?x.run+1:1;x.last=d;x.pc++;S[e][d]='P'}
+      else{x.run=0;S[e][d]=fri?'SB':'S'}
+    });
+  }
+  return S;
+}
+
+function gen(y,m,notify){
+  var k=pk(y,m),E=st.employees;
+  if(!E.length)return;
+  st.schedules[k]=genSched(y,m,E);pushSched(k);renderAll();
+  if(notify)toast('Jadwal otomatis dibuat untuk '+E.length+' pegawai ('+(E.length%2?'Siang lebih banyak dari Pagi':'Pagi dan Siang dibagi rata')+').');
+}
+var schedView=(window.innerWidth<720)?'mobile':'desktop',mvEmp='*';
+function applyView(){
+  $('dv').classList.toggle('hide',schedView!=='desktop');$('mv').classList.toggle('hide',schedView!=='mobile');
+  $('vd').className=schedView==='desktop'?'on':'';$('vm').className=schedView==='mobile'?'on':'';
+}
+function setView(v){schedView=v;try{localStorage.setItem(KEY+'_view',v)}catch(e){}renderSched()}
+function renderMobile(){
+  var n=dim(cy,cm),D=st.schedules[pk(cy,cm)]||{},E=st.employees,now=new Date();
+  var td=(now.getFullYear()===cy&&now.getMonth()===cm)?now.getDate():-1;
+  if(mvEmp!=='*'&&E.indexOf(mvEmp)<0)mvEmp='*';
+  var h='<div style="margin-bottom:10px"><label>Tampilkan</label><select style="width:100%" onchange="mvEmp=this.value;renderMobile()"><option value="*">Semua pegawai</option>'+E.map(function(e){return '<option'+(e===mvEmp?' selected':'')+'>'+esc(e)+'</option>'}).join('')+'</select></div>';
+  if(!E.length)h+='<p class="mu">Belum ada pegawai.</p>';
+  for(var d=1;d<=n;d++){
+    var w=new Date(cy,cm,d).getDay(),cl=(w===0||w===6)?'we':w===5?'fr':'',ch='',p=0,s=0,l=0;
+    E.forEach(function(e,i){
+      var c=(D[e]||[])[d-1]||'S';
+      if(c==='P')p++;else if(c==='L')l++;else s++;
+      if(mvEmp!=='*'&&e!==mvEmp)return;
+      ch+='<div class="chip '+c+'" onclick="cyc('+i+','+(d-1)+')"><span>'+(mvEmp==='*'?esc(e):full(c))+'</span><i>'+c+'</i></div>';
+    });
+    var ok=p===shiftTarget(E.length-l,E.length)&&s===E.length-l-p;
+    h+='<div class="mv-day"><div class="mv-d '+cl+(d===td?' td':'')+'"><b>'+d+'</b><span>'+DS[w]+'</span></div><div class="mv-c">'+ch+(mvEmp==='*'?'<span class="cvg'+(ok?'':' bad')+'">P'+p+' · S'+s+'</span>':'')+'</div></div>';
+  }
+  $('mv').innerHTML=h;
+}
+
+function renderAll(){
+  renderSched();renderSum();renderAtt();renderPay();renderSlips();
+  $('ec').textContent=st.employees.length;
+  $('per').textContent='PERIODE: '+MN[cm].toUpperCase()+' '+cy;
+}
+
+function renderSched(){
+  applyView();if(schedView==='mobile'){renderMobile();return}
+  var n=dim(cy,cm),D=st.schedules[pk(cy,cm)]||{},E=st.employees,edit=(canW||!db);
+  var h1='<tr><th rowspan="3" class="nm">NAMA</th><th colspan="'+n+'">TANGGAL</th></tr><tr>',h2='<tr>';
+  for(var d=1;d<=n;d++){
+    var w=new Date(cy,cm,d).getDay(),c=((w===0||w===6)?'we':w===5?'fr':'')+(w===1?' wk':'');
+    h1+='<th class="'+c+'">'+d+'</th>';h2+='<th class="'+c+'" style="font-size:10px;font-weight:500">'+DS[w]+'</th>';
+  }
+  $('th').innerHTML=h1+'</tr>'+h2+'</tr>';
+  var b='';
+  if(!E.length)b='<tr><td colspan="'+(n+1)+'" style="padding:20px">Belum ada pegawai. Klik "Pegawai" untuk menambah.</td></tr>';
+  E.forEach(function(e,i){
+    var r=D[e]||[];
+    b+='<tr><td class="nm"><span class="no">'+(i+1)+'</span>'+esc(e)+(edit&&E.length>1?'<span class="np mv"><a onclick="moveEmp('+i+',-1)" title="Naikkan">&#9650;</a><a onclick="moveEmp('+i+',1)" title="Turunkan">&#9660;</a></span>':'')+'</td>';
+    for(var d=0;d<n;d++){var c=r[d]||'S',w=new Date(cy,cm,d+1).getDay();b+='<td class="c '+c+(w===1?' wk':'')+'" onclick="cyc('+i+','+d+')" title="'+esc(e)+' tgl '+(d+1)+': '+full(c)+'">'+c+'</td>'}
+    b+='</tr>';
+  });
+  if(E.length){
+    ['P','S'].forEach(function(k){
+      b+='<tr class="cv"><td class="nm">&Sigma; '+(k==='P'?'Pagi':'Siang')+'</td>';
+      for(var d=0;d<n;d++){
+        var p=0,s=0,l=0,w=new Date(cy,cm,d+1).getDay();
+        E.forEach(function(e){var c=(D[e]||[])[d];if(c==='P')p++;else if(c==='L')l++;else if(c)s++});
+        var ok=p===shiftTarget(E.length-l,E.length)&&s===E.length-l-p;
+        b+='<td class="'+(ok?'':'bad')+(w===1?' wk':'')+'">'+(k==='P'?p:s)+'</td>';
+      }
+      b+='</tr>';
+    });
+  }
+  $('tb').innerHTML=b;
+}
+
+function renderSum(){
+  var D=st.schedules[pk(cy,cm)]||{},h='';
+  st.employees.forEach(function(e){
+    var p=0,s=0,sb=0,l=0,lw=0;
+    (D[e]||[]).forEach(function(c,i){
+      if(c==='P')p++;else if(c==='S')s++;else if(c==='SB')sb++;else if(c==='L'){l++;var w=new Date(cy,cm,i+1).getDay();if(w===0||w===6)lw++}
+    });
+    var ok=l===2&&lw===2;
+    h+='<tr><td><b>'+esc(e)+'</b></td><td>'+p+'</td><td>'+s+'</td><td>'+sb+'</td><td><b>'+l+'</b></td><td><span class="pill '+(ok?'ok':'wr')+'">'+(ok?'✓ 2x Weekend':'⚠ '+lw+'/2 Weekend')+'</span></td></tr>';
+  });
+  $('sum').innerHTML=h;
+}
+
+function cyc(i,d){
+  if(!adm())return;
+  var e=st.employees[i],r=(st.schedules[pk(cy,cm)]||{})[e];if(!r)return;
+  var o=['P','S','SB','L'];r[d]=o[(o.indexOf(r[d])+1)%4];
+  pushSched(pk(cy,cm));renderSched();renderSum();
+}
+function chg(){cm=+$('sm').value;cy=+$('sy').value;ensure(cy,cm);renderAll()}
+function saveTitle(){if(!adm()){$('ttl').textContent=st.title;return}var t=$('ttl').textContent.trim()||'JADWAL KERJA APOTEK';$('ttl').textContent=t;st.title=t;pushCfg()}
+function tab(t){
+  $('vj').classList.toggle('hide',t!=='j');$('va').classList.toggle('hide',t!=='a');$('vg').classList.toggle('hide',t!=='g');$('vn').classList.toggle('hide',t!=='n');$('vw').classList.toggle('hide',t!=='w');$('vl').classList.toggle('hide',t!=='l');$('vt').classList.toggle('hide',t!=='t');
+  $('tj').className=t==='j'?'on':'';$('ta').className=t==='a'?'on':'';$('tg').className=t==='g'?'on':'';$('tn').className=t==='n'?'on':'';$('tw').className=t==='w'?'on':'';$('tl').className=t==='l'?'on':'';$('tx').className=t==='t'?'on':'';
+  if(t==='a')renderAtt();
+  if(t==='g')renderPay();
+  if(t==='n')renderSlips();
+  if(t==='w')renderSwap();
+  if(t==='l')renderLic();
+  if(t==='t')renderAbout();
+}
+
+/* Pegawai */
+function openEmp(){renderEmp();show('me')}
+function hideEmp(){hide('me');renderAll()}
+function renderEmp(){
+  $('el').innerHTML=st.employees.map(function(e,i){
+    return '<div class="row sp" style="padding:6px 0;border-bottom:1px solid var(--bd);align-items:center"><input value="'+esc(e)+'" onchange="renEmp('+i+',this.value)" style="flex:1;text-transform:uppercase;font-weight:700"><button onclick="moveEmp('+i+',-1)"'+(i===0?' disabled':'')+'>▲</button> <button onclick="moveEmp('+i+',1)"'+(i===st.employees.length-1?' disabled':'')+'>▼</button> <button onclick="delEmp('+i+')" style="color:#e11d48">Hapus</button></div>';
+  }).join('')||'<p class="mu">Daftar kosong.</p>';
+}
+function addEmp(){
+  if(!adm())return;
+  var n=$('ne').value.trim().toUpperCase();
+  if(!n)return toast('Masukkan nama pegawai.');
+  if(st.employees.indexOf(n)>-1)return toast('Nama sudah ada.');
+  st.employees.push(n);
+  var k=pk(cy,cm);if(!st.schedules[k])st.schedules[k]={};
+  st.schedules[k][n]=new Array(dim(cy,cm)).fill('S');
+  $('ne').value='';pushCfg();pushSched(k);renderEmp();toast('Pegawai '+n+' ditambahkan. Tekan Jadwal Otomatis untuk menyusun ulang jadwal.');
+}
+function renEmp(i,v){
+  if(!adm())return renderEmp();
+  var n=v.trim().toUpperCase(),o=st.employees[i];
+  if(!n||n===o)return;
+  if(st.employees.indexOf(n)>-1){toast('Nama sudah dipakai.');return renderEmp()}
+  st.employees[i]=n;if(st.payroll.base[o]!==undefined){st.payroll.base[n]=st.payroll.base[o];delete st.payroll.base[o]}
+  Object.keys(st.schedules).forEach(function(k){var s=st.schedules[k];if(s[o]){s[n]=s[o];delete s[o]}});
+  Object.keys(st.attendance).forEach(function(k){var s=st.attendance[k];if(s[o]){s[n]=s[o];delete s[o]}});
+  pushCfg();pushPay();Object.keys(st.schedules).forEach(pushSched);Object.keys(st.attendance).forEach(pushAtt);renderEmp();toast('Nama diubah.');
+}
+function delEmp(i){if(!adm())return;var n=st.employees[i];st.employees.splice(i,1);pushCfg();renderEmp();toast(n+' dihapus. Tekan Jadwal Otomatis untuk menyusun ulang jadwal.')}
+
+/* Absensi */
+function attToday(r){
+  var d=new Date();$('ad').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  if(r!==false)renderAtt();
+}
+function parts(){var p=$('ad').value.split('-');return p.length===3?[+p[0],+p[1]-1,+p[2]]:null}
+function defRec(c,e){
+  return {status:c==='L'?'Libur':'Hadir',checkIn:c==='P'?'07:00':c==='L'?'':'14:00',checkOut:c==='P'?'14:00':c==='L'?'':'21:00',note:c==='SB'&&e?'Bersih-bersih rak':''};
+}
+function renderAtt(){
+  var p=parts();if(!p)return;
+  var ds=$('ad').value,y=p[0],m=p[1],d=p[2];
+  $('adl').textContent='Hari '+DF[new Date(y,m,d).getDay()]+', '+d+' '+MN[m]+' '+y;
+  ensure(y,m);
+  var D=st.attendance[ds]||{},S=st.schedules[pk(y,m)]||{},h='';
+  var sts=['Hadir','Terlambat','Izin','Sakit','Alpha','Libur'];
+  st.employees.forEach(function(e,i){
+    var c=(S[e]||[])[d-1]||'S',r=D[e]||defRec(c);
+    h+='<tr><td><b>'+esc(e)+'</b></td><td><span class="pill '+c+'" style="border:1px solid #475569">'+c+'</span></td>'+
+    '<td><select onchange="upAtt('+i+',\'status\',this.value)">'+sts.map(function(s){return '<option'+(r.status===s?' selected':'')+'>'+s+'</option>'}).join('')+'</select></td>'+
+    '<td><input type="time" value="'+(r.checkIn||'')+'" onchange="upAtt('+i+',\'checkIn\',this.value)"></td>'+
+    '<td><input type="time" value="'+(r.checkOut||'')+'" onchange="upAtt('+i+',\'checkOut\',this.value)"></td>'+
+    '<td><input value="'+esc(r.note||'')+'" placeholder="Catatan..." onchange="upAtt('+i+',\'note\',this.value)"></td></tr>';
+  });
+  $('atb').innerHTML=h;renderRec(y,m);renderCal(y,m);
+}
+var calEmp='*';
+var CS={Hadir:['#bbf7d0','#166534','✅'],Terlambat:['#fde68a','#92400e','⏰'],Izin:['#bfdbfe','#1e40af','📄'],Sakit:['#e9d5ff','#6b21a8','🏥'],Alpha:['#fecaca','#991b1b','❌'],Libur:['#e5e7eb','#374151','🔴']};
+function stOf(ds,e,S,d){var r=(st.attendance[ds]||{})[e];if(r&&CS[r.status])return r.status;return ((S[e]||[])[d-1]==='L')?'Libur':null}
+function renderCal(y,m){
+  if(calEmp!=='*'&&st.employees.indexOf(calEmp)<0)calEmp='*';
+  $('ce').innerHTML='<option value="*">Semua pegawai</option>'+st.employees.map(function(e){return '<option'+(e===calEmp?' selected':'')+'>'+esc(e)+'</option>'}).join('');
+  $('cl').textContent=MN[m]+' '+y;
+  var n=dim(y,m),mm=String(m+1).padStart(2,'0'),S=st.schedules[pk(y,m)]||{},cur=$('ad').value;
+  var off=(new Date(y,m,1).getDay()+6)%7;
+  var h=['Sen','Sel','Rab','Kam','Jum','Sab','Min'].map(function(t){return '<div class="h">'+t+'</div>'}).join('');
+  for(var i=0;i<off;i++)h+='<div></div>';
+  for(var d=1;d<=n;d++){
+    var ds=y+'-'+mm+'-'+String(d).padStart(2,'0'),inner='',bg='',fg='';
+    if(calEmp==='*'){
+      inner=st.employees.map(function(e){
+        var s=stOf(ds,e,S,d),c=s?CS[s]:null;
+        return '<span style="display:inline-block;min-width:16px;margin:1px;border-radius:4px;font-size:10px;font-weight:700;background:'+(c?c[0]:'#fff')+';color:'+(c?c[1]:'#64748b')+';border:1px solid #cbd5e1">'+esc(e.charAt(0))+'</span>';
+      }).join('');
+    }else{
+      var s2=stOf(ds,calEmp,S,d),c2=s2?CS[s2]:null,code=((S[calEmp]||[])[d-1])||'';
+      if(c2){bg=c2[0];fg=c2[1]}
+      inner='<div style="font-size:16px;line-height:1.2">'+(c2?c2[2]:'')+'</div><div style="font-weight:700">'+code+'</div>';
+    }
+    h+='<div class="d" onclick="pickDay(\''+ds+'\')" style="background:'+(bg||'var(--card)')+';color:'+(fg||'var(--tx)')+(ds===cur?';outline:2px solid #059669':'')+'"><b>'+d+'</b>'+inner+'</div>';
+  }
+  $('cal').innerHTML=h;
+}
+function pickDay(ds){$('ad').value=ds;renderAtt();$('atb').scrollIntoView({behavior:'smooth',block:'center'})}
+function openFull(){
+  if(!adm())return;
+  var p=parts();if(!p)return;
+  $('fm').textContent=MN[p[1]]+' '+p[0];
+  $('fe').innerHTML='<option value="*">Semua pegawai</option>'+st.employees.map(function(e,i){return '<option value="'+i+'">'+esc(e)+'</option>'}).join('');
+  $('fo').checked=false;show('mf');
+}
+function doFull(){
+  if(!adm())return;
+  var p=parts(),y=p[0],m=p[1],n=dim(y,m);ensure(y,m);
+  var sel=$('fe').value,ow=$('fo').checked,S=st.schedules[pk(y,m)]||{},mm=String(m+1).padStart(2,'0'),cnt=0;
+  for(var d=1;d<=n;d++){
+    var ds=y+'-'+mm+'-'+String(d).padStart(2,'0'),ch=false;
+    st.employees.forEach(function(e,i){
+      if(sel!=='*'&&+sel!==i)return;
+      if(!st.attendance[ds])st.attendance[ds]={};
+      if(st.attendance[ds][e]&&!ow)return;
+      st.attendance[ds][e]=defRec((S[e]||[])[d-1]||'S',true);cnt++;ch=true;
+    });
+    if(ch)pushAtt(ds);
+  }
+  hide('mf');renderAtt();toast('Kehadiran penuh diisi: '+cnt+' catatan.');
+}
+function upAtt(i,f,v){
+  var ds=$('ad').value,e=st.employees[i],p=parts();
+  if(!st.attendance[ds])st.attendance[ds]={};
+  if(!st.attendance[ds][e]){var c=((st.schedules[pk(p[0],p[1])]||{})[e]||[])[p[2]-1]||'S';st.attendance[ds][e]=defRec(c)}
+  st.attendance[ds][e][f]=v;pushAtt(ds);renderRec(p[0],p[1]);renderCal(p[0],p[1]);
+}
+function fillAtt(){
+  var p=parts();if(!p)return;
+  var ds=$('ad').value,S=st.schedules[pk(p[0],p[1])]||{};
+  st.attendance[ds]={};
+  st.employees.forEach(function(e){st.attendance[ds][e]=defRec((S[e]||[])[p[2]-1]||'S',true)});
+  pushAtt(ds);renderAtt();toast('Absensi diisi sesuai jadwal.');
+}
+function renderRec(y,m){
+  var n=dim(y,m),mm=String(m+1).padStart(2,'0'),S=st.schedules[pk(y,m)]||{},h='';
+  st.employees.forEach(function(e){
+    var c={Hadir:0,Terlambat:0,Izin:0,Sakit:0,Alpha:0,Libur:0};
+    for(var d=1;d<=n;d++){
+      var r=(st.attendance[y+'-'+mm+'-'+String(d).padStart(2,'0')]||{})[e];
+      if(r){if(c[r.status]!==undefined)c[r.status]++}
+      else if(((S[e]||[])[d-1])==='L')c.Libur++;
+    }
+    h+='<tr><td><b>'+esc(e)+'</b></td><td>'+c.Hadir+'</td><td>'+c.Terlambat+'</td><td>'+c.Izin+'</td><td>'+c.Sakit+'</td><td>'+c.Alpha+'</td><td>'+c.Libur+'</td></tr>';
+  });
+  $('rec').innerHTML=h;
+}
+
+/* WhatsApp */
+function openWA(){setWA('month');show('mw')}
+function setWA(mo){
+  wm=mo;$('w1').className=mo==='month'?'p':'';$('w2').className=mo==='today'?'p':'';
+  $('wt').value=waText(mo);
+}
+function waText(mo){
+  var t=st.title,L;
+  if(mo==='today'){
+    var d=new Date(),y=d.getFullYear(),m=d.getMonth(),dd=d.getDate();ensure(y,m);
+    var S=st.schedules[pk(y,m)]||{};
+    L=['*'+t+'*','📅 Hari Ini: *'+DF[d.getDay()]+', '+dd+' '+MN[m]+' '+y+'*','--------------------------------'];
+    st.employees.forEach(function(e){var c=(S[e]||[])[dd-1]||'-';L.push('• *'+e+'*: '+c+' ('+full(c)+')')});
+    L.push('--------------------------------','_P=Pagi (07-14), S=Siang (14-21), SB=Bersih Rak, L=Libur_');
+    return L.join('\n');
+  }
+  var n=dim(cy,cm),S2=st.schedules[pk(cy,cm)]||{};
+  L=['*'+t+'*','📆 Periode: *'+MN[cm]+' '+cy+'*','⏰ Pagi: 07:00-14:00 | Siang: 14:00-21:00','--------------------------------'];
+  for(var d=1;d<=n;d++){
+    L.push('Tgl '+String(d).padStart(2,'0')+' ('+DS[new Date(cy,cm,d).getDay()]+'): '+st.employees.map(function(e){return e+':'+((S2[e]||[])[d-1]||'-')}).join(' | '));
+  }
+  L.push('--------------------------------','*Keterangan:* P=Pagi, S=Siang, SB=Bersih-Bersih Rak (Jumat), L=Libur');
+  return L.join('\n');
+}
+function copyWA(){
+  var t=$('wt');t.select();
+  try{if(navigator.clipboard)navigator.clipboard.writeText(t.value);else document.execCommand('copy');toast('Teks disalin.')}catch(e){toast('Gagal menyalin.')}
+}
+function sendWA(){window.open('https://wa.me/?text='+encodeURIComponent($('wt').value),'_blank')}
+</script>
+<script>
+/* ===== LISENSI & LANGGANAN (versi mandiri / APK) ===== */
+var LIC_CFG={wa:'6285752557857',trialDays:7,app:'Sistem Manajemen Absensi dan Gaji Karyawan',pay:'Pembayaran melalui admin WhatsApp 0857-5255-7857. Setelah memesan, admin akan mengirim instruksi pembayaran dan kunci lisensi.'};
+var LIC_PUB={"kty":"EC","crv":"P-256","x":"Qhue9AUWEcTAKrOblvysznorYp23mysTcDQwc-cq-nM","y":"XErAffG-vlRqkEU5JLhunp1dRywMG-7tHZDx0rTZbiU"};
+var PLANS={M:{n:'Bulanan',price:30000,per:'/ bulan',note:'Berlaku 30 hari'},Y:{n:'Tahunan',price:150000,per:'/ tahun',note:'Hemat 58% (setara Rp12.500/bulan)'},F:{n:'Full Lisensi',price:350000,per:'sekali bayar',note:'Selamanya, tanpa perpanjangan'}};
+var LK='apotek_lic_v1',lic={},licCur=null,locked=false,_tab=tab;
+tab=function(t){if(locked&&t!=='l')t='l';return _tab(t)};
+function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function addDays(s,n){var p=s.split('-');return ymd(new Date(+p[0],+p[1]-1,+p[2]+n))}
+function diffDays(a,b){return Math.round((Date.parse(b)-Date.parse(a))/864e5)}
+function licSave(){try{localStorage.setItem(LK,JSON.stringify(lic))}catch(e){}}
+function licLoad(){
+  try{lic=JSON.parse(localStorage.getItem(LK)||'null')||{}}catch(e){lic={}}
+  if(!lic.devId){var a=new Uint8Array(4);crypto.getRandomValues(a);lic.devId=Array.from(a).map(function(x){return x.toString(16).padStart(2,'0')}).join('').toUpperCase()}
+  if(!lic.install)lic.install=ymd(new Date());
+  if(!lic.keys)lic.keys=[];
+  if(lic.key){if(lic.keys.indexOf(lic.key)<0)lic.keys.push(lic.key);lic.key=null}
+  licSave();
+}
+function b64uDec(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
+async function licVerify(key){
+  try{
+    var parts=String(key).trim().split('.');if(parts.length!==2)return null;
+    var k=await crypto.subtle.importKey('jwk',LIC_PUB,{name:'ECDSA',namedCurve:'P-256'},false,['verify']);
+    var ok=await crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},k,b64uDec(parts[1]),new TextEncoder().encode(parts[0]));
+    if(!ok)return null;
+    var pl=JSON.parse(new TextDecoder().decode(b64uDec(parts[0])));
+    return pl&&PLANS[pl.p]?pl:null;
+  }catch(e){return null}
+}
+async function licStatus(){
+  var today=ymd(new Date());
+  if(lic.seen&&today<addDays(lic.seen,-1))return {st:'tamper'};
+  if(!lic.seen||today>lic.seen){lic.seen=today;licSave()}
+  var best=null,future=null,had=false,ks=lic.keys||[];
+  for(var i=0;i<ks.length;i++){
+    var pl=await licVerify(ks[i]);
+    if(!pl||(pl.d&&pl.d!==lic.devId))continue;
+    had=true;
+    if(pl.p==='F')return {st:'full',pl:pl};
+    if(!pl.e)continue;
+    if(today<=pl.e&&today>=addDays(pl.s,-1)){if(!best||pl.e>best.pl.e)best={st:'active',pl:pl,left:diffDays(today,pl.e)+1}}
+    else if(today<addDays(pl.s,-1)){if(!future||pl.s<future.s)future=pl}
+  }
+  if(best)return best;
+  if(future)return {st:'pending',pl:future};
+  if(!lic.used&&!had&&LIC_CFG.trialDays>0){
+    var te=addDays(lic.install,LIC_CFG.trialDays);
+    if(today<te)return {st:'trial',left:diffDays(today,te)};
+  }
+  return {st:(lic.used||had)?'expired':'none'};
+}
+async function licApply(){
+  var s=await licStatus();licCur=s;
+  locked=!(s.st==='full'||s.st==='active'||s.st==='trial');
+  document.body.classList.toggle('locked',locked);
+  var T={pending:'\uD83D\uDD52 Lisensi mulai '+(s.pl&&s.pl.s),full:'\u2B50 Lisensi Penuh',active:'\u2B50 Aktif \u00b7 sisa '+(s.left||0)+' hari',trial:'\uD83D\uDD52 Percobaan \u00b7 sisa '+(s.left||0)+' hari'};
+  $('licb').textContent=T[s.st]||'\u26D4 Lisensi tidak aktif';
+  if(locked)_tab('l');else if(!$('vl').classList.contains('hide'))renderLic();
+}
+function renderLic(){
+  var s=licCur||{st:'none'},pl=s.pl,h;
+  if(s.st==='full')h=['ok','\u2705 Lisensi Penuh aktif','Terima kasih! Aplikasi aktif selamanya.'+(pl.n?' Atas nama: '+pl.n+'.':'')];
+  else if(s.st==='active')h=['ok','\u2705 Paket '+PLANS[pl.p].n+' aktif','Berlaku sampai '+pl.e+' (sisa '+s.left+' hari).'+(pl.n?' Atas nama: '+pl.n+'.':'')];
+  else if(s.st==='trial')h=['wr','\uD83D\uDD52 Masa percobaan gratis','Sisa '+s.left+' hari. Pilih paket di bawah agar tetap bisa dipakai.'];
+  else if(s.st==='pending')h=['wr','\uD83D\uDD52 Lisensi belum berlaku','Kunci perpanjangan sudah diterima dan aktif mulai '+pl.s+'.'];
+  else if(s.st==='tamper')h=['bad','\u26D4 Tanggal perangkat tidak sesuai','Atur tanggal dan jam perangkat dengan benar, lalu buka ulang aplikasi.'];
+  else if(s.st==='expired')h=['bad','\u26D4 Langganan berakhir','Perpanjang dengan memilih paket di bawah dan memasukkan kunci baru. Data kamu tetap aman.'];
+  else h=['bad','\u26D4 Masa percobaan habis','Pilih paket di bawah untuk melanjutkan. Data kamu tetap aman.'];
+  $('lst').innerHTML='<div class="pill '+h[0]+'" style="font-size:14px;padding:6px 14px;'+(h[0]==='bad'?'background:#fecaca;color:#991b1b':'')+'">'+h[1]+'</div><p style="margin:10px 0 0">'+esc(h[2])+'</p>';
+  $('lplans').innerHTML=Object.keys(PLANS).map(function(k){
+    var p=PLANS[k];
+    return '<div class="plan'+(k==='Y'?' best':'')+'">'+(k==='Y'?'<span class="bdg">Paling hemat</span>':k==='F'?'<span class="bdg">Sekali bayar</span>':'')+'<div class="pn">'+p.n+'</div><div class="pp">'+rp(p.price)+'</div><div class="mu">'+p.per+'</div><div class="mu" style="margin:8px 0 12px">'+p.note+'</div><button class="p" onclick="licBuy(\''+k+'\')">Pesan via WhatsApp</button></div>';
+  }).join('');
+  $('ldev').value=lic.devId;$('lpay').textContent=LIC_CFG.pay;
+}
+function licBuy(k){
+  var p=PLANS[k],nm=$('lname').value.trim();
+  var t='Halo, saya ingin memesan paket *'+p.n+'* ('+rp(p.price)+') aplikasi '+LIC_CFG.app+'.\nNama: '+(nm||'-')+'\nID Perangkat: '+lic.devId;
+  window.open('https://wa.me/'+String(LIC_CFG.wa).replace(/\D/g,'')+'?text='+encodeURIComponent(t),'_blank');
+}
+function licCopyDev(){
+  var i=$('ldev');i.select();
+  try{if(navigator.clipboard)navigator.clipboard.writeText(lic.devId);else document.execCommand('copy');toast('ID Perangkat disalin.')}catch(e){toast('Salin manual ID Perangkat.')}
+}
+async function licActivate(){
+  var key=$('lkey').value.replace(/\s+/g,'');
+  var pl=await licVerify(key);
+  if(!pl)return toast('Kunci lisensi tidak valid.');
+  if(pl.d&&pl.d!==lic.devId)return toast('Kunci ini untuk perangkat lain (ID '+pl.d+').');
+  var today=ymd(new Date());
+  if(pl.p!=='F'&&(!pl.e||today>pl.e))return toast('Kunci ini sudah kedaluwarsa.');
+  var ks=lic.keys||[],vs=[];
+  for(var i=0;i<ks.length;i++)vs.push(await licVerify(ks[i]));
+  if(vs.some(function(v){return v&&v.p==='F'}))return toast('Lisensi penuh sudah aktif di perangkat ini.');
+  for(var j=0;j<ks.length;j++){
+    var cur=vs[j];
+    if(ks[j]===key)return toast('Kunci ini tidak memperpanjang masa aktif yang ada.');
+    if(cur&&cur.e&&pl.p!=='F'&&today<=cur.e&&pl.s>=cur.s&&pl.e<=cur.e)return toast('Kunci ini tidak memperpanjang masa aktif yang ada.');
+  }
+  ks.push(key);lic.keys=ks;lic.used=true;licSave();$('lkey').value='';
+  await licApply();renderLic();toast('Lisensi diterima: paket '+PLANS[pl.p].n+'.');
+}
+window.addEventListener('DOMContentLoaded',function(){licLoad();licApply();setInterval(licApply,600000)});
+</script>
+</body>
+</html>
